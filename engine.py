@@ -13,12 +13,12 @@ class Value:
         return f"Value(data={self.data}, grad={self.grad})"
 
     def __add__(self, other):
-         other = other if isinstance(other, Value) else Value(other)
-         out = Value(self.data + other.data, (self, other), '+')
+        other = other if isinstance(other, Value) else Value(other)
+        out = Value(self.data + other.data, (self, other), '+')
 
-     def _backward():
-        self.grad += out.grad
-        other.grad += out.grad
+        def _backward():
+            self.grad += out.grad
+            other.grad += out.grad
         out._backward = _backward
 
         return out
@@ -38,8 +38,8 @@ class Value:
         assert isinstance(other, (int, float)), "only supporting int/float powers for now"
         out = Value(self.data**other, (self,), f'**{other}')
 
-       def _backward():
-            self.grad += (other * self.data**(other-1)) * out.grad
+        def _backward():
+            self.grad += (other * self.data**(other - 1)) * out.grad
         out._backward = _backward
 
         return out
@@ -80,7 +80,7 @@ class Value:
     def __rmul__(self, other): # other * self
         return self * other
 
-def __neg__(self): # -self
+    def __neg__(self): # -self
         return self * -1
 
     def __radd__(self, other): # other + self
